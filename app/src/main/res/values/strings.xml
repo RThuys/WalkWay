@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">WalkWay</string>
+
+    <string name="error_message">
+        No data has been found for this location.
+    </string>
+
+    <string name="login_button">LOGIN</string>
+    <string name="find_nearby_button">Find nearby tracks</string>
+    <string name="location_not_available">"Finding your location"</string>
+    <string name="error_location">Im sorry, x(</string>
+
+    <string name="username_label">Username</string>
+    <string name="password_label">Password</string>
+    <string name="confirm_password_label">Confirm password</string>
+    <string name="firstName_label">First name</string>
+    <string name="lastName_label">Last name</string>
+    <string name="email_label">Email</string>
+
+    <string name="incorrect_password_match_toast">Please fill in matching passwords</string>
+
+    <string name="cancel_button">Cancel</string>
+    <string name="info_label">WalkWay: Info about the usage of the app.\n\nWe are here to make sure all the data from this app is explicit for users eyes only.
+    The user is our main priority, the safety of the data is guaranteed. \n\nThis app is used to locate nearby tracks for a user to explore.\n\n\nWe
+        like to thank you on behalf of the whole WalkWay team (Roland) for the usage of the app!</string>
+
+    <string name="empty_error">Must be filled in</string>
+</resources>
