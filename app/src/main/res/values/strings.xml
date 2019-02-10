@@ -25,4 +25,6 @@
         like to thank you on behalf of the whole WalkWay team (Roland) for the usage of the app!</string>
 
     <string name="empty_error">Must be filled in</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Item Detail</string>
 </resources>

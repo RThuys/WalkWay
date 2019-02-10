@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         mNearbyTracks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContext(NearbyPathsActivity.class);
+                setContext(ItemListActivity.class);
             }
         });
     }

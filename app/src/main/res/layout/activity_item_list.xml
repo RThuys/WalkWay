@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/image"
     android:orientation="vertical">
-
 
     <EditText
         android:id="@+id/location_input_field"
@@ -15,28 +16,18 @@
         android:layout_marginTop="20sp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:imeOptions="flagNoExtractUi"
         android:text="Name"
         android:textColor="#FFFFFF" />
 
-
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview_paths"
+        android:id="@+id/item_list"
+        android:name="com.rt.walkway.ItemListFragment"
         android:layout_width="match_parent"
-        android:layout_height="540dp"
-        android:layout_marginTop="80sp"
-        android:layout_marginHorizontal="20sp"/>
-
-    <TextView
-        android:id="@+id/tv_error_message_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80sp"
-        android:layout_marginHorizontal="20sp"
-        android:textColor="#FFFFFF"
-        android:padding="16dp"
-        android:text="@string/error_message"
-        android:textSize="20sp"
-        android:visibility="invisible" />
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".ItemListActivity"
+        tools:listitem="@layout/item_list_content" />
 
     <ProgressBar
         android:id="@+id/pb_loading_indicator"
@@ -45,5 +36,4 @@
         android:layout_height="101dp"
         android:layout_gravity="center"
         android:visibility="invisible" />
-
-</FrameLayout>
+</LinearLayout>

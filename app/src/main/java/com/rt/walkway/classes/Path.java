@@ -5,12 +5,12 @@ public class Path {
     private String cityName;
     private double distance;
     private String description;
-    private int difficulty;
+    private String difficulty;
 
     public Path() {
     }
 
-    public Path(int id, String cityName, double distance, String description, int difficulty) {
+    public Path(int id, String cityName, double distance, String description, String difficulty) {
         this.id = id;
         this.cityName = cityName;
         this.distance = distance;
@@ -42,11 +42,16 @@ public class Path {
         this.description = discription;
     }
 
-    public int getDifficulty() {
+    public String getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(int difficulty) {
+    public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
+    }
+
+    @Override
+    public String toString() {
+        return getCityName() + " | " + getDistance() + " | " + getDescription() + " | " + getDifficulty();
     }
 }
