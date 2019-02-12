@@ -12,7 +12,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.app.Activity;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -25,10 +24,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rt.walkway.classes.Path;
-import com.rt.walkway.dummy.DummyContent;
 import com.rt.walkway.utils.FetchData;
 import com.rt.walkway.utils.PrintListner;
-import com.rt.walkway.utils.PrintListnerImp;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,7 +46,7 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
         return mPathData;
     }
 
-/* JSON FETCHER
+    /* JSON FETCHER
         http://myjson.com/8fu5o
         https://api.myjson.com/bins/q8hfg
      */

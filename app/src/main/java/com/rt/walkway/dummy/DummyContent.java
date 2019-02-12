@@ -57,10 +57,6 @@ public class DummyContent {
     private static final int COUNT = 4;
 
     static {
-        // Add some sample items.
-        //getJSON();
-        //------------------
-        //------------------
         getJSON();
         for (int i = 1; i <= COUNT; i++) {
             addItem(createDummyItem(i));
