@@ -7,4 +7,6 @@
     tools:context=".ItemDetailActivity"
 
     android:background="@drawable/image"
-    tools:ignore="MergeRootFrame" />
+    tools:ignore="MergeRootFrame" >
+
+</FrameLayout>

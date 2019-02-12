@@ -54,7 +54,7 @@ public class DummyContent {
      */
     public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
 
-    private static final int COUNT = 25;
+    private static final int COUNT = 4;
 
     static {
         // Add some sample items.
@@ -68,7 +68,7 @@ public class DummyContent {
     }
 
     public static void getJSON() {
-        new FetchData(mPrintListner).execute("https://api.myjson.com/bins/8fu5o");
+        //new FetchData(mPrintListner).execute("https://api.myjson.com/bins/8fu5o");
     }
 
     private static void addItem(DummyItem item) {

@@ -28,12 +28,13 @@ import com.rt.walkway.classes.Path;
 import com.rt.walkway.dummy.DummyContent;
 import com.rt.walkway.utils.FetchData;
 import com.rt.walkway.utils.PrintListner;
+import com.rt.walkway.utils.PrintListnerImp;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class ItemListActivity extends AppCompatActivity implements LocationListener {
+public class ItemListActivity extends AppCompatActivity implements LocationListener, PrintListner {
     private boolean mTwoPane;
     private EditText mLocationText;
     private String mLocationString;
@@ -42,7 +43,13 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
     private ProgressBar mLoadingIndicator;
     private List<Address> addresses;
 
-    /* JSON FETCHER
+    private static Path[] mPathData;
+
+    public static Path[] getmPathData() {
+        return mPathData;
+    }
+
+/* JSON FETCHER
         http://myjson.com/8fu5o
         https://api.myjson.com/bins/q8hfg
      */
@@ -58,9 +65,7 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
             mTwoPane = true;
         }
 
-        View recyclerView = findViewById(R.id.item_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        new FetchData(this).execute("https://api.myjson.com/bins/8fu5o");
 
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -78,7 +83,7 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, mTwoPane, mPathData));
     }
 
     @Override
@@ -120,22 +125,31 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
 
     }
 
+    @Override
+    public void getResult(Path[] receiptItem) {
+        Log.d("Test", receiptItem[2].toString());
+        mPathData = receiptItem;
+        View recyclerView = findViewById(R.id.item_list);
+        assert recyclerView != null;
+        setupRecyclerView((RecyclerView) recyclerView);
+    }
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
-        private Path[] mPathData;
+
 
         private final ItemListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
         private final boolean mTwoPane;
+        private final Path[] mPathData;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+
+                Path path = (Path) view.getTag();
 
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.id);
+                    arguments.putString(ItemDetailFragment.ARG_ITEM_ID, String.valueOf(path.getId()));
                     ItemDetailFragment fragment = new ItemDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -144,7 +158,7 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, ItemDetailActivity.class);
-                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
+                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, String.valueOf(path.getId()));
 
                     context.startActivity(intent);
                 }
@@ -152,11 +166,10 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
         };
 
         SimpleItemRecyclerViewAdapter(ItemListActivity parent,
-                                      List<DummyContent.DummyItem> items,
-                                      boolean twoPane) {
-            mValues = items;
+                                      boolean twoPane, Path[] pathData) {
             mParentActivity = parent;
             mTwoPane = twoPane;
+            mPathData = pathData;
         }
 
         @Override
@@ -168,20 +181,16 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
-
-            holder.itemView.setTag(mValues.get(position));
+            holder.mIdView.setText(String.valueOf(position + 1));
+            holder.mContentView.setText(mPathData[position].getCityName());
+            holder.itemView.setTag(mPathData[position]);
             holder.itemView.setOnClickListener(mOnClickListener);
         }
 
         @Override
         public int getItemCount() {
-            return mValues.size();
-        }
-
-        public void setPathData(Path[] pathData) {
-            mPathData = pathData;
+            // return mValues.size();
+            return mPathData.length;
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {

@@ -23,8 +23,9 @@ public class FetchData extends AsyncTask<String, Void, Path[]> {
     //https://api.myjson.com/bins/q8hfg  //json example
     static JSONObject jsonObject = null;
     PrintListner mPrintListner;
+    ItemListActivity itemListActivity;
 
-   // private ItemListActivity.SimpleItemRecyclerViewAdapter adapter = new ItemListActivity.SimpleItemRecyclerViewAdapter(this);
+    // private ItemListActivity.SimpleItemRecyclerViewAdapter adapter = new ItemListActivity.SimpleItemRecyclerViewAdapter(this);
 
     public FetchData() {
 
@@ -78,6 +79,5 @@ public class FetchData extends AsyncTask<String, Void, Path[]> {
     @Override
     protected void onPostExecute(Path[] result) {
         this.mPrintListner.getResult(result);
-        Log.d("onPost", result[1].toString());
     }
 }
