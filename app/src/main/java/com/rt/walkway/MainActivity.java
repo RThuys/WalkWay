@@ -26,7 +26,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     private Button mNearbyTracks;
     private Button mLoginButton;
+    private Button mProfileButton;
     private ImageView mInfoButton;
+
+    public static boolean loggedIn = false;
 
 
     private LocationManager locationManager;
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mProfileButton = findViewById(R.id.profile_view_button);
 
         onClickNearbyTracks();
         onClickLogin();
@@ -46,6 +50,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         } else {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
             this.onLocationChanged((null));
+        }
+
+        if (loggedIn == true) {
+            mLoginButton.setVisibility(View.GONE);
+            mProfileButton.setVisibility(View.VISIBLE);
+
+        } else {
+            mLoginButton.setVisibility(View.VISIBLE);
+            mProfileButton.setVisibility(View.GONE);
         }
 
     }
@@ -78,7 +91,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 onCreateDialog();
             }
         });
+    }
 
+    public void onClickProfile(View view) {
+        setContext(ProfileActivity.class);
     }
 
     private void setContext(Class classContext) {

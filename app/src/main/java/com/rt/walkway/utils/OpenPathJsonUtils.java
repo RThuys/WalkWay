@@ -43,9 +43,8 @@ public final class OpenPathJsonUtils {
         final String DESCRIPTION = "description";
         final String DIFFICULTY = "difficulty";
 
-        String[] parsedPathData = null;
         Path[] parsedPaths = null;
-        JSONObject pathJson = new JSONObject(pathJsonStr);
+        JSONObject pathJson = new JSONObject(pathJsonStr); //TODO jsonArrayCursor
         JSONArray pathArray = pathJson.getJSONArray(SET_NAME);
 
         parsedPaths = new Path[pathArray.length()];
@@ -62,10 +61,5 @@ public final class OpenPathJsonUtils {
                     cityPath.get(DIFFICULTY).toString());
         }
         return parsedPaths;
-    }
-
-    public static ContentValues[] getFullWeatherDataFromJson(Context context, String forecastJsonStr) {
-        /** This will be implemented in a future lesson **/
-        return null;
     }
 }

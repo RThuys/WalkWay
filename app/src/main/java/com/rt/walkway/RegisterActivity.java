@@ -1,10 +1,16 @@
 package com.rt.walkway;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +23,7 @@ import android.widget.Toast;
 
 import com.rt.walkway.dataBase.UserDBAdapter;
 
+//TODO implement pop-up on success
 public class RegisterActivity extends AppCompatActivity {
     EditText mFirstName, mLastName, mEmail, mUsername, mPassword, mConfirmPassword;
     TextInputLayout mFirstNameView, mLastNameView, mEmailView, mUsernameView, mPasswordView, mConfirmPasswordView;
@@ -46,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void addUser(View view) {
+        addNotification();
         int passwordMatch = 0;
         if (mFirstName.getText().toString().isEmpty()) {
             passwordMatch = this.showError(mFirstNameView, getString(R.string.empty_error));
@@ -57,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
             passwordMatch = this.showError(mEmailView, getString(R.string.empty_error));
         } else hideError(mEmailView);
         if (mUsername.getText().toString().isEmpty()) {
-            passwordMatch =  this.showError(mUsernameView, getString(R.string.empty_error));
+            passwordMatch = this.showError(mUsernameView, getString(R.string.empty_error));
         } else hideError(mUsernameView);
         if (mPassword.getText().toString().isEmpty()) {
             passwordMatch = this.showError(mPasswordView, getString(R.string.empty_error));
@@ -65,12 +73,12 @@ public class RegisterActivity extends AppCompatActivity {
         if (mConfirmPassword.getText().toString().isEmpty()) {
             passwordMatch = this.showError(mConfirmPasswordView, getString(R.string.empty_error));
         } else hideError(mConfirmPasswordView);
-        if ( !mPassword.getText().toString().equals(mConfirmPassword.getText().toString())) {
+        if (!mPassword.getText().toString().equals(mConfirmPassword.getText().toString())) {
             Toast toast = Toast.makeText(getApplicationContext(), R.string.incorrect_password_match_toast, Toast.LENGTH_SHORT);
             toast.show();
             this.showError(mConfirmPasswordView, getString(R.string.empty_error));
             this.showError(mPasswordView, getString(R.string.empty_error));
-        } else  if (passwordMatch ==  0){
+        } else if (passwordMatch == 0) {
             Log.i("here", "before insertData");
             //long id = dbAdapter.insertData(mFirstName.getText().toString(), mLastName.getText().toString(), mEmail.getText().toString(), mUsername.getText().toString(), mPassword.getText().toString());
             long id = 1;
@@ -86,6 +94,43 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(startLoginActivityIntent);
             }
         }
+    }
+
+    private void addNotification() {
+        Log.i("nofitificatinon", "test");
+        NotificationManager mNotificationManager;
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this.getApplicationContext(), "notify_001");
+        Intent ii = new Intent(this.getApplicationContext(), MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, ii, 0);
+
+        NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+        bigText.bigText("test");
+        bigText.setBigContentTitle("Today's Bible Verse");
+        bigText.setSummaryText("Text in detail");
+
+        mBuilder.setContentIntent(pendingIntent);
+        mBuilder.setSmallIcon(R.mipmap.ic_launcher_round);
+        mBuilder.setContentTitle("Your Title");
+        mBuilder.setContentText("Your text");
+        mBuilder.setPriority(Notification.PRIORITY_MAX);
+        mBuilder.setStyle(bigText);
+
+        mNotificationManager =
+                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "YOUR_CHANNEL_ID";
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            mNotificationManager.createNotificationChannel(channel);
+            mBuilder.setChannelId(channelId);
+        }
+
+        mNotificationManager.notify(0, mBuilder.build());
+        Log.i("nofitificatinon", "test");
     }
 
     private int showError(TextInputLayout textInputLayout, String error) {

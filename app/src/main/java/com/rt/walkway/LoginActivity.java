@@ -9,8 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+//TODO Hamburger menu implementation on login page
 public class LoginActivity extends AppCompatActivity {
-    private ImageView mLoginButton;
+    private Button mLoginButton;
     private Button mRegisterButton;
     private ImageView mGhostAvatar;
 
@@ -75,5 +76,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+
+    public void login(View view) {
+
+        MainActivity.loggedIn = true;
+        setContext(MainActivity.class);
     }
 }

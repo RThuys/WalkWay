@@ -6,6 +6,7 @@
     </string>
 
     <string name="login_button">LOGIN</string>
+    <string name="profile_button">PROFILE</string>
     <string name="find_nearby_button">Find nearby tracks</string>
     <string name="location_not_available">"Finding your location"</string>
     <string name="error_location">Im sorry, x(</string>
@@ -29,4 +30,5 @@
     <string name="empty_error">Must be filled in</string>
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
+    <string name="title_activity_profile">ProfileActivity</string>
 </resources>

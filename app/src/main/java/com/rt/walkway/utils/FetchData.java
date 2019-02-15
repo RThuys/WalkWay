@@ -45,7 +45,6 @@ public class FetchData extends AsyncTask<String, Void, Path[]> {
     protected Path[] doInBackground(String... params) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
-        JSONArray data = null;
 
         try {
             URL url = new URL(params[0]);

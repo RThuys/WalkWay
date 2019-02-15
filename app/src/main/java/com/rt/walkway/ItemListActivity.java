@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -20,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -36,6 +39,8 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
     private EditText mLocationText;
     private String mLocationString;
     private LocationManager locationManager;
+
+    private static Resources mResources;
 
     private ProgressBar mLoadingIndicator;
     private List<Address> addresses;
@@ -64,6 +69,7 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
 
         new FetchData(this).execute("https://api.myjson.com/bins/8fu5o");
 
+        mResources = getResources();
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -129,6 +135,7 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
         View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
+
     }
 
     public static class SimpleItemRecyclerViewAdapter
@@ -180,6 +187,18 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mIdView.setText(String.valueOf(position + 1));
             holder.mContentView.setText(mPathData[position].getCityName());
+            holder.mImageView.setVisibility((mResources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? View.GONE : View.VISIBLE);
+            Log.i("r", mPathData[position].getDifficulty());
+            if (mPathData[position].getDifficulty().equals("easy")) {
+                Log.i("L","easy");
+                holder.mImageView.setImageResource(R.drawable.easy);
+            } else if (mPathData[position].getDifficulty().equals("medium")) {
+                Log.i("L", "medium");
+                holder.mImageView.setImageResource(R.drawable.medium);
+            } else {
+                Log.i("L", "hard");
+                holder.mImageView.setImageResource(R.drawable.hard);
+            }
             holder.itemView.setTag(mPathData[position]);
             holder.itemView.setOnClickListener(mOnClickListener);
         }
@@ -193,11 +212,14 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView mIdView;
             final TextView mContentView;
+            final ImageView mImageView;
 
             ViewHolder(View view) {
                 super(view);
                 mIdView = (TextView) view.findViewById(R.id.id_text);
                 mContentView = (TextView) view.findViewById(R.id.content);
+                mImageView = (ImageView) view.findViewById(R.id.difficulty_image);
+
             }
         }
     }
