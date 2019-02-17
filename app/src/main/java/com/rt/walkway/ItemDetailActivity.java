@@ -63,5 +63,4 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         context.startActivity(intent);
     }
-
 }

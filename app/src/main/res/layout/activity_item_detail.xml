@@ -26,7 +26,7 @@
                 android:id="@+id/item_detail_description_container"
                 android:layout_width="match_parent"
                 android:layout_height="370dp" />
-            
+
         </LinearLayout>
     </ScrollView>
 
