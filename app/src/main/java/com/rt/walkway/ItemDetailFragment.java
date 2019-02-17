@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rt.walkway.classes.Path;
-import com.rt.walkway.dummy.DummyContent;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -24,7 +23,6 @@ public class ItemDetailFragment extends Fragment {
     public static final String ITEM_ID = "id";
 
 
-    private DummyContent.DummyItem mItem;
     private Path[] pathsData;
 
     public ItemDetailFragment() {
@@ -34,7 +32,7 @@ public class ItemDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            //mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
             pathsData = ItemListActivity.getmPathData();
         }
     }

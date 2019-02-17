@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -39,6 +40,7 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
     private EditText mLocationText;
     private String mLocationString;
     private LocationManager locationManager;
+    private static TextView mLine;
 
     private static Resources mResources;
 
@@ -54,6 +56,11 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
     /* JSON FETCHER
         http://myjson.com/8fu5o
         https://api.myjson.com/bins/q8hfg
+
+        2
+        http://myjson.com/8rz4i
+        https://api.myjson.com/bins/8rz4i
+
      */
 
     @Override
@@ -62,12 +69,13 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
         setContentView(R.layout.activity_item_list);
         mLocationText = findViewById((R.id.location_input_field));
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
+        mLine = findViewById(R.id.item_detail);
 
         if (findViewById(R.id.item_detail_container) != null) {
             mTwoPane = true;
         }
 
-        new FetchData(this).execute("https://api.myjson.com/bins/8fu5o");
+        new FetchData(this).execute("https://api.myjson.com/bins/8rz4i");
 
         mResources = getResources();
 
@@ -130,13 +138,13 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
 
     @Override
     public void getResult(Path[] receiptItem) {
-        Log.d("Test", receiptItem[2].toString());
         mPathData = receiptItem;
         View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
-
     }
+
+    private static Path pathTemp = null;
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
@@ -150,18 +158,28 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
             public void onClick(View view) {
 
                 Path path = (Path) view.getTag();
+                pathTemp = path;
 
                 if (mTwoPane) {
+
                     Bundle arguments = new Bundle();
                     arguments.putString(ItemDetailFragment.ARG_ITEM_ID, String.valueOf(path.getId()));
-                    ItemDetailFragment fragment = new ItemDetailFragment();
-                    fragment.setArguments(arguments);
+                    ItemCityFragment fragment_city = new ItemCityFragment();
+                    fragment_city.setArguments(arguments);
+                    ItemDetailFragment fragment_description = new ItemDetailFragment();
+                    fragment_description.setArguments(arguments);
+                    ItemMapFragment fragment_map = new ItemMapFragment();
+                    fragment_map.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.item_detail_container, fragment)
+                            .replace(R.id.item_detail_place_container, fragment_city)
+                            .replace(R.id.item_detail_description_container, fragment_description)
+                            .replace(R.id.item_detail_map_container, fragment_map)
                             .commit();
+
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, ItemDetailActivity.class);
+                    Log.i("intent", String.valueOf(path.getId()));
                     intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, String.valueOf(path.getId()));
 
                     context.startActivity(intent);
@@ -188,15 +206,11 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
             holder.mIdView.setText(String.valueOf(position + 1));
             holder.mContentView.setText(mPathData[position].getCityName());
             holder.mImageView.setVisibility((mResources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? View.GONE : View.VISIBLE);
-            Log.i("r", mPathData[position].getDifficulty());
             if (mPathData[position].getDifficulty().equals("easy")) {
-                Log.i("L","easy");
                 holder.mImageView.setImageResource(R.drawable.easy);
             } else if (mPathData[position].getDifficulty().equals("medium")) {
-                Log.i("L", "medium");
                 holder.mImageView.setImageResource(R.drawable.medium);
             } else {
-                Log.i("L", "hard");
                 holder.mImageView.setImageResource(R.drawable.hard);
             }
             holder.itemView.setTag(mPathData[position]);
@@ -223,4 +237,13 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
             }
         }
     }
+
+    public void goToMap(View view) {
+        Context context = view.getContext();
+        Intent intent = new Intent(context, MapActivity.class);
+        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, String.valueOf(pathTemp.getId()));
+
+        context.startActivity(intent);
+    }
+
 }

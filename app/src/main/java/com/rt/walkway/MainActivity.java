@@ -2,7 +2,6 @@ package com.rt.walkway;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,13 +15,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
-
-    private ProgressBar mLoadingIndicator;
-    private TextView mErrorMessageDisplay;
 
     private Button mNearbyTracks;
     private Button mLoginButton;
@@ -52,45 +46,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             this.onLocationChanged((null));
         }
 
-        if (loggedIn == true) {
-            mLoginButton.setVisibility(View.GONE);
-            mProfileButton.setVisibility(View.VISIBLE);
-
-        } else {
-            mLoginButton.setVisibility(View.VISIBLE);
-            mProfileButton.setVisibility(View.GONE);
-        }
+        loggedIn();
 
     }
 
     private void onClickLogin() {
         mLoginButton = findViewById(R.id.login_view_button);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setContext(LoginActivity.class);
-            }
-        });
+        mLoginButton.setOnClickListener(v -> setContext(LoginActivity.class));
     }
 
     private void onClickNearbyTracks() {
         mNearbyTracks = findViewById(R.id.find_nearby_routes_button);
-        mNearbyTracks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setContext(ItemListActivity.class);
-            }
-        });
+        mNearbyTracks.setOnClickListener(v -> setContext(ItemListActivity.class));
     }
 
     private void onClickInfo() {
         mInfoButton = findViewById(R.id.info_button);
-        mInfoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onCreateDialog();
-            }
-        });
+        mInfoButton.setOnClickListener(v -> onCreateDialog());
     }
 
     public void onClickProfile(View view) {
@@ -140,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     protected void onResume() {
         super.onResume();
+        loggedIn();
     }
 
     @Override
@@ -160,5 +133,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    private void loggedIn() {
+        if (loggedIn == true) {
+            mLoginButton.setVisibility(View.GONE);
+            mProfileButton.setVisibility(View.VISIBLE);
+
+        } else {
+            mLoginButton.setVisibility(View.VISIBLE);
+            mProfileButton.setVisibility(View.GONE);
+        }
     }
 }

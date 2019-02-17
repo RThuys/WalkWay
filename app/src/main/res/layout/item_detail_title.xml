@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/item_detail_detail"
+        android:id="@+id/item_detail_title"
         style="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
         android:layout_height="50dp"

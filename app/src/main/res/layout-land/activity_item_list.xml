@@ -45,19 +45,38 @@
             tools:context="com.rt.walkway.ItemListActivity"
             tools:listitem="@layout/item_list_content" />
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:background="@drawable/image"
+            android:orientation="vertical"
+            tools:context=".ItemDetailActivity"
+            tools:ignore="MergeRootFrame">
 
-
-
-            <FrameLayout
+            <LinearLayout
                 android:id="@+id/item_detail_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="3" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/item_detail_place_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+
+                <FrameLayout
+                    android:id="@+id/item_detail_description_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <FrameLayout
+                    android:id="@+id/item_detail_map_container"
+                    android:layout_width="400dp"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+        </ScrollView>
     </LinearLayout>
 
 

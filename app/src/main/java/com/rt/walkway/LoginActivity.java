@@ -56,6 +56,11 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
+        boolean loggedIn = MainActivity.loggedIn;
+        if (loggedIn == true) {
+           setContext(MainActivity.class);
+
+        }
     }
 
     @Override

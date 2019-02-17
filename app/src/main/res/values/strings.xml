@@ -31,4 +31,7 @@
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_map">MapActivity</string>
+
+    <string name="access_token">sk.eyJ1IjoicnRkZWx1eGUiLCJhIjoiY2pzNXVuNjE0MGkybjQ0cGthZXBzcDR3ZiJ9.D73sH96NYbAkBfgU6aHTLw</string>
 </resources>

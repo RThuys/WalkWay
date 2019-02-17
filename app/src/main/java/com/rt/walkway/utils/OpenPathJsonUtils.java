@@ -42,6 +42,10 @@ public final class OpenPathJsonUtils {
         final String DISTANCE = "distance";
         final String DESCRIPTION = "description";
         final String DIFFICULTY = "difficulty";
+        final String LAT_BEG = "latitudeBegin";
+        final String LONG_BEG = "longitudeBegin";
+        final String LAT_END = "latitudeEnd";
+        final String LONG_END = "longitudeEnd";
 
         Path[] parsedPaths = null;
         JSONObject pathJson = new JSONObject(pathJsonStr); //TODO jsonArrayCursor
@@ -58,7 +62,11 @@ public final class OpenPathJsonUtils {
                     cityPath.get(CITY_NAME).toString(),
                     Double.parseDouble(cityPath.get(DISTANCE).toString()),
                     cityPath.get(DESCRIPTION).toString(),
-                    cityPath.get(DIFFICULTY).toString());
+                    cityPath.get(DIFFICULTY).toString(),
+                    Double.parseDouble(cityPath.get(LAT_BEG).toString()),
+                    Double.parseDouble(cityPath.get(LONG_BEG).toString()),
+                    Double.parseDouble(cityPath.get(LAT_END).toString()),
+                    Double.parseDouble(cityPath.get(LONG_END).toString()));
         }
         return parsedPaths;
     }
