@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -52,8 +53,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    private Toast toast;
+
     public void addUser(View view) {
-        addNotification();
         int passwordMatch = 0;
         if (mFirstName.getText().toString().isEmpty()) {
             passwordMatch = this.showError(mFirstNameView, getString(R.string.empty_error));
@@ -63,8 +65,19 @@ public class RegisterActivity extends AppCompatActivity {
         } else hideError(mLastNameView);
         if (mEmail.getText().toString().isEmpty()) {
             passwordMatch = this.showError(mEmailView, getString(R.string.empty_error));
+        } else if (!getEmail(mEmail.getText().toString().toUpperCase()).isEmpty()) {
+            Log.i("sut", "addUser: ");
+            toast = Toast.makeText(getApplicationContext(), R.string.email_exists_toast, Toast.LENGTH_SHORT);
+            toast.show();
+            passwordMatch = this.showError(mEmailView, getString(R.string.empty_error));
         } else hideError(mEmailView);
         if (mUsername.getText().toString().isEmpty()) {
+            passwordMatch = this.showError(mUsernameView, getString(R.string.empty_error));
+        } else if (!getUser(mUsername.getText().toString().toUpperCase()).isEmpty()) {
+            if (!mUsername.getText().toString().isEmpty()) {
+                toast = Toast.makeText(getApplicationContext(), R.string.username_exists_toast, Toast.LENGTH_SHORT);
+                toast.show();
+            }
             passwordMatch = this.showError(mUsernameView, getString(R.string.empty_error));
         } else hideError(mUsernameView);
         if (mPassword.getText().toString().isEmpty()) {
@@ -74,20 +87,21 @@ public class RegisterActivity extends AppCompatActivity {
             passwordMatch = this.showError(mConfirmPasswordView, getString(R.string.empty_error));
         } else hideError(mConfirmPasswordView);
         if (!mPassword.getText().toString().equals(mConfirmPassword.getText().toString())) {
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.incorrect_password_match_toast, Toast.LENGTH_SHORT);
+            toast = Toast.makeText(getApplicationContext(), R.string.incorrect_password_match_toast, Toast.LENGTH_SHORT);
             toast.show();
             this.showError(mConfirmPasswordView, getString(R.string.empty_error));
             this.showError(mPasswordView, getString(R.string.empty_error));
         } else if (passwordMatch == 0) {
             Log.i("here", "before insertData");
-            //long id = dbAdapter.insertData(mFirstName.getText().toString(), mLastName.getText().toString(), mEmail.getText().toString(), mUsername.getText().toString(), mPassword.getText().toString());
-            long id = 1;
+            long id = dbAdapter.insertData(mFirstName.getText().toString().toUpperCase(), mLastName.getText().toString().toUpperCase(), mEmail.getText().toString().toUpperCase(), mUsername.getText().toString().toUpperCase(), mPassword.getText().toString());
+            //long id = 1;
             Log.i("here", "addUser: " + id);
             if (id <= 0) {
                 Log.i("here", "addUser: Insertion unsuccessful");
             } else {
                 Log.i("here", "addUser: insert complete");
                 viewData(view);
+                addNotification();
                 Context context = RegisterActivity.this;
                 Class destinationActivity = LoginActivity.class;
                 Intent startLoginActivityIntent = new Intent(context, destinationActivity);
@@ -106,14 +120,15 @@ public class RegisterActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, ii, 0);
 
         NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
-        bigText.bigText("test");
-        bigText.setBigContentTitle("Today's Bible Verse");
-        bigText.setSummaryText("Text in detail");
+        bigText.bigText("Registration success! You can now login.");
+        bigText.setBigContentTitle("Welcome " + getUserName(mUsername.getText().toString()));
+        bigText.setSummaryText("Something new is going on!");
 
         mBuilder.setContentIntent(pendingIntent);
-        mBuilder.setSmallIcon(R.mipmap.ic_launcher_round);
-        mBuilder.setContentTitle("Your Title");
-        mBuilder.setContentText("Your text");
+        mBuilder.setSmallIcon(R.drawable.tree);
+        mBuilder.setAutoCancel(true);
+        mBuilder.setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.tree));
+        mBuilder.setContentTitle("Registration success!");
         mBuilder.setPriority(Notification.PRIORITY_MAX);
         mBuilder.setStyle(bigText);
 
@@ -149,11 +164,21 @@ public class RegisterActivity extends AppCompatActivity {
         Log.i("data", "viewData: " + data);
     }
 
+    public String getUser(String username) {
+        String data = dbAdapter.getUsername(username);
+        Log.i("Username", "username: " + data);
+        return data.toUpperCase();
+    }
 
-    /*
-     mGhostAvatar = findViewById(R.id.avatar_image);
-        mGhostAvatar.setVisibility((getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? View.GONE : View.VISIBLE);
+    public String getEmail(String email) {
+        String data = dbAdapter.getEmail(email);
+        Log.i("Email", "email: " + data);
+        return data.toUpperCase();
+    }
 
-     */
-
+    public String getUserName(String userName) {
+        String data = dbAdapter.getUserName(userName);
+        Log.i("Email", "email: " + data);
+        return data.toUpperCase();
+    }
 }

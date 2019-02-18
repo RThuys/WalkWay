@@ -11,10 +11,10 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -40,12 +39,18 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
     private EditText mLocationText;
     private String mLocationString;
     private LocationManager locationManager;
-    private static TextView mLine;
+    private ProgressBar mLoader;
 
     private static Resources mResources;
 
-    private ProgressBar mLoadingIndicator;
+    private static ProgressBar mLoadingIndicator;
     private List<Address> addresses;
+    private SwipeRefreshLayout swipeContainer;
+    private static RecyclerView mRecyclerView;
+
+
+    private static String JSON = "https://api.myjson.com/bins/soa5u";
+
 
     private static Path[] mPathData;
 
@@ -61,23 +66,23 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
         http://myjson.com/8rz4i
         https://api.myjson.com/bins/8rz4i
 
+
+        3 copied
+        http://myjson.com/soa5u
+        https://api.myjson.com/bins/soa5u
      */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
+        swipeContainer = findViewById(R.id.refresh_list);
         mLocationText = findViewById((R.id.location_input_field));
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
-        mLine = findViewById(R.id.item_detail);
+        mRecyclerView = findViewById(R.id.item_list);
 
-        if (findViewById(R.id.item_detail_container) != null) {
-            mTwoPane = true;
-        }
-
-        new FetchData(this).execute("https://api.myjson.com/bins/8rz4i");
-
-        mResources = getResources();
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mLoadingIndicator.setVisibility(View.VISIBLE);
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -86,7 +91,24 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, this);
             this.onLocationChanged((null));
         }
+        new FetchData(this).execute(JSON);
+
+        swipeContainer.setOnRefreshListener(() -> {
+            new FetchData(this).execute(JSON);
+        });
+
+
+        if (findViewById(R.id.item_detail_container) != null) {
+            mTwoPane = true;
+        }
+
+
+        mResources = getResources();
+
+
+
     }
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -138,6 +160,7 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
 
     @Override
     public void getResult(Path[] receiptItem) {
+        swipeContainer.setRefreshing(false);
         mPathData = receiptItem;
         View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
@@ -203,15 +226,17 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
             holder.mIdView.setText(String.valueOf(position + 1));
             holder.mContentView.setText(mPathData[position].getCityName());
             holder.mImageView.setVisibility((mResources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? View.GONE : View.VISIBLE);
             if (mPathData[position].getDifficulty().equals("easy")) {
-                holder.mImageView.setImageResource(R.drawable.easy);
+                holder.mImageView.setImageResource(R.drawable.treeeasy);
             } else if (mPathData[position].getDifficulty().equals("medium")) {
-                holder.mImageView.setImageResource(R.drawable.medium);
+                holder.mImageView.setImageResource(R.drawable.treemedium);
             } else {
-                holder.mImageView.setImageResource(R.drawable.hard);
+                holder.mImageView.setImageResource(R.drawable.treehard);
             }
             holder.itemView.setTag(mPathData[position]);
             holder.itemView.setOnClickListener(mOnClickListener);

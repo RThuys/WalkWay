@@ -30,7 +30,9 @@ public class ItemCityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.item_detail, container, false);
         if (pathsData != null) {
-            ((TextView) rootView.findViewById(R.id.item_detail)).setText("Current location " + pathsData[Integer.parseInt(getArguments().get("item_id").toString()) - 1].getCityName());
+            //TODO implement layout ID #
+            ((TextView) rootView.findViewById(R.id.item_detail)).setText("Current location " + pathsData[Integer.parseInt(getArguments().get("item_id").toString()) - 1].getCityName())
+            ;
         }
 
         return rootView;

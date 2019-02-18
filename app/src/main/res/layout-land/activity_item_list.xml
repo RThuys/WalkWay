@@ -16,6 +16,11 @@
     master/detail flow.
     
     -->
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <EditText
         android:id="@+id/location_input_field"
         android:layout_width="match_parent"
@@ -33,17 +38,39 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/item_list"
-            android:name="com.rt.walkway.ItemListFragment"
-            android:layout_width="@dimen/item_width"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:layoutManager="LinearLayoutManager"
-            tools:context="com.rt.walkway.ItemListActivity"
-            tools:listitem="@layout/item_list_content" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <ProgressBar
+                android:id="@+id/pb_loading_indicator"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="93dp"
+                android:layout_height="101dp"
+                android:layout_gravity="center"
+                android:visibility="invisible"
+                android:layout_centerHorizontal="true"/>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+
+            android:id="@+id/refresh_list"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/item_list"
+                android:name="com.rt.walkway.ItemListFragment"
+                android:layout_width="@dimen/item_width"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:layoutManager="LinearLayoutManager"
+                tools:context="com.rt.walkway.ItemListActivity"
+                tools:listitem="@layout/item_list_content" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+        </RelativeLayout>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -79,13 +106,5 @@
         </ScrollView>
     </LinearLayout>
 
-
-    <ProgressBar
-        android:id="@+id/pb_loading_indicator"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="93dp"
-        android:layout_height="101dp"
-        android:layout_gravity="center"
-        android:visibility="invisible" />
 
 </LinearLayout>

@@ -12,14 +12,27 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rt.walkway.dataBase.UserDBAdapter;
+
 public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+    public static String USER;
+    private TextView mUsernameTextField;
+
+    UserDBAdapter dbAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        dbAdapter = new UserDBAdapter(this);
+
+
+        mUsernameTextField = findViewById(R.id.username_profile);
+        mUsernameTextField.setText(getUserName(USER));
     }
 
     public void openMenu(View view) {
@@ -54,4 +67,13 @@ public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMe
         startActivity(startLoginActivityIntent);
     }
 
+    public String getUserName(String userName) {
+        String data = dbAdapter.getUserName(userName);
+        Log.i("Email", "email: " + data);
+        return data.toUpperCase();
+    }
+
+    public void goToPaths(View view) {
+        setContext(ItemListActivity.class);
+    }
 }

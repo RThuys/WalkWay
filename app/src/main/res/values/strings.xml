@@ -19,6 +19,9 @@
     <string name="email_label">Email</string>
 
     <string name="incorrect_password_match_toast">Please fill in matching passwords</string>
+    <string name="username_exists_toast">Username already exists.</string>
+    <string name="email_exists_toast">Email address already exists.</string>
+    <string name="wrong_credentials_toast">Username or password are incorrect.</string>
 
     <string name="description_label">Short description of the path: </string>
 

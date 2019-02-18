@@ -33,6 +33,31 @@ public class UserDBAdapter {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String[] columns = {dbHelper.USER_ID, dbHelper.USER_FIRST_NAME, dbHelper.USER_LAST_NAME, dbHelper.USER_EMAIL, dbHelper.USER_USERNAME, dbHelper.USER_PASSWORD};
         Cursor cursor = db.query(UserDBHelper.TABLE_NAME, columns, null, null, null, null, null);
+        return createStandardBuffer(cursor);
+    }
+
+    public String getUsername(String userName) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String[] columns = {dbHelper.USER_ID, dbHelper.USER_FIRST_NAME, dbHelper.USER_LAST_NAME, dbHelper.USER_EMAIL, dbHelper.USER_USERNAME, dbHelper.USER_PASSWORD};
+        Cursor cursor = db.query(UserDBHelper.TABLE_NAME, columns, UserDBHelper.USER_USERNAME + "  LIKE '" + userName + "'", null, null, null, null);
+        return createStandardBuffer(cursor);
+    }
+
+    public String getEmail(String emailString) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String[] columns = {dbHelper.USER_ID, dbHelper.USER_FIRST_NAME, dbHelper.USER_LAST_NAME, dbHelper.USER_EMAIL, dbHelper.USER_USERNAME, dbHelper.USER_PASSWORD};
+        Cursor cursor = db.query(UserDBHelper.TABLE_NAME, columns, UserDBHelper.USER_EMAIL + "  LIKE '" + emailString + "'", null, null, null, null);
+        return createStandardBuffer(cursor);
+    }
+
+    public String getCredentials(String usernameString, String passwordString) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String[] columns = {dbHelper.USER_ID, dbHelper.USER_FIRST_NAME, dbHelper.USER_LAST_NAME, dbHelper.USER_EMAIL, dbHelper.USER_USERNAME, dbHelper.USER_PASSWORD};
+        Cursor cursor = db.query(UserDBHelper.TABLE_NAME, columns, UserDBHelper.USER_USERNAME + "  LIKE '" + usernameString + "' AND " + UserDBHelper.USER_PASSWORD + "  LIKE '" + passwordString + "'", null, null, null, null);
+        return createStandardBuffer(cursor);
+    }
+
+    private String createStandardBuffer(Cursor cursor) {
         StringBuffer buffer = new StringBuffer();
         while (cursor.moveToNext()) {
             int cid = cursor.getInt(cursor.getColumnIndex(dbHelper.USER_ID));
@@ -42,6 +67,19 @@ public class UserDBAdapter {
             String username = cursor.getString(cursor.getColumnIndex(dbHelper.USER_USERNAME));
             String password = cursor.getString(cursor.getColumnIndex(dbHelper.USER_PASSWORD));
             buffer.append(cid + " " + firstName + " " + lastName + " " + email + " " + username + " " + password);
+        }
+        return buffer.toString();
+
+    }
+
+    public String getUserName(String userName) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String[] columns = {dbHelper.USER_ID, dbHelper.USER_FIRST_NAME, dbHelper.USER_LAST_NAME, dbHelper.USER_EMAIL, dbHelper.USER_USERNAME, dbHelper.USER_PASSWORD};
+        Cursor cursor = db.query(UserDBHelper.TABLE_NAME, columns, UserDBHelper.USER_USERNAME + "  LIKE '" + userName + "'", null, null, null, null);
+        StringBuffer buffer = new StringBuffer();
+        while (cursor.moveToNext()) {
+            String firstName = cursor.getString(cursor.getColumnIndex(dbHelper.USER_FIRST_NAME));
+            buffer.append(firstName);
         }
         return buffer.toString();
     }
