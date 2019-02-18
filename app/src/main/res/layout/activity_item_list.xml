@@ -9,7 +9,6 @@
     android:background="@drawable/image">
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,27 +27,77 @@
             android:text="Name"
             android:textColor="#FFFFFF" />
 
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-        <ProgressBar
-            android:id="@+id/pb_loading_indicator"
-            style="@style/Widget.AppCompat.ProgressBar"
-            android:layout_width="93dp"
-            android:layout_height="101dp"
-            android:layout_gravity="center"
-            android:visibility="invisible"
-            android:layout_centerHorizontal="true"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/item_list"
-            android:name="com.rt.walkway.ItemListFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="LinearLayoutManager"
-            tools:context=".ItemListActivity"
-            tools:listitem="@layout/item_list_content" />
-</RelativeLayout>
+            <ProgressBar
+                android:id="@+id/pb_loading_indicator"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="93dp"
+                android:layout_height="101dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:visibility="invisible" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/item_list"
+                android:name="com.rt.walkway.ItemListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="LinearLayoutManager"
+                tools:context=".ItemListActivity"
+                tools:listitem="@layout/item_list_content" />
+
+
+            <TextView
+                android:id="@+id/color_info_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#8F111111"
+                android:visibility="invisible"
+                android:onClick="nextStep"/>
+
+            <LinearLayout
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+
+
+                <ImageView
+                    android:id="@+id/easy_tree_image"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:visibility="invisible"
+                    app:srcCompat="@drawable/treeeasy" />
+
+
+                <TextView
+                    android:id="@+id/tree_text_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:textSize="20sp"
+                    android:textColor="#FFFFFF"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/info_button_colors"
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="18dp"
+                android:onClick="showColorInfo"
+                app:srcCompat="@android:drawable/ic_dialog_info" />
+
+
+        </RelativeLayout>
 
     </LinearLayout>
 

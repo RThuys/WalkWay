@@ -37,4 +37,7 @@
     <string name="title_map">MapActivity</string>
 
     <string name="access_token">sk.eyJ1IjoicnRkZWx1eGUiLCJhIjoiY2pzNXVuNjE0MGkybjQ0cGthZXBzcDR3ZiJ9.D73sH96NYbAkBfgU6aHTLw</string>
+    <string name="track_indication_hard">This indicates the track is hard</string>
+    <string name="track_indication_medium">This indicates the track is medium</string>
+    <string name="track_indication_easy">This indicates the track is easy</string>
 </resources>

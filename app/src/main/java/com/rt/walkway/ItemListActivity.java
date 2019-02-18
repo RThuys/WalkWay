@@ -37,9 +37,10 @@ import java.util.Locale;
 public class ItemListActivity extends AppCompatActivity implements LocationListener, PrintListner {
     private boolean mTwoPane;
     private EditText mLocationText;
-    private String mLocationString;
+    private ImageView mTreeInfo, mInfoButton;
+    private TextView mColorInfoBackground, mTreeTextInfo;
+
     private LocationManager locationManager;
-    private ProgressBar mLoader;
 
     private static Resources mResources;
 
@@ -47,6 +48,8 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
     private List<Address> addresses;
     private SwipeRefreshLayout swipeContainer;
     private static RecyclerView mRecyclerView;
+
+    private int count = 0;
 
 
     private static String JSON = "https://api.myjson.com/bins/soa5u";
@@ -80,9 +83,14 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
         mLocationText = findViewById((R.id.location_input_field));
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
         mRecyclerView = findViewById(R.id.item_list);
+        mColorInfoBackground = findViewById(R.id.color_info_background);
+        mTreeInfo = findViewById(R.id.easy_tree_image);
+        mInfoButton = findViewById(R.id.info_button_colors);
+        mTreeTextInfo = findViewById(R.id.tree_text_info);
 
         mRecyclerView.setVisibility(View.INVISIBLE);
         mLoadingIndicator.setVisibility(View.VISIBLE);
+        count = 0;
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -104,7 +112,6 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
 
 
         mResources = getResources();
-
 
 
     }
@@ -135,7 +142,7 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
             try {
                 addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                 mLocationText.setText(addresses.get(0).getLocality() + ", " + addresses.get(0).getSubAdminArea());
-                mLocationString = addresses.get(0).getLocality();
+                //mLocationString = addresses.get(0).getLocality();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -168,6 +175,38 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
     }
 
     private static Path pathTemp = null;
+
+
+    public void showColorInfo(View view) {
+        mRecyclerView.setClickable(false);
+        mRecyclerView.setEnabled(false);
+        mInfoButton.setVisibility(View.INVISIBLE);
+        mTreeInfo.setImageResource(R.drawable.treeeasy);
+        mTreeInfo.setVisibility(View.VISIBLE);
+        mTreeTextInfo.setText(getString(R.string.track_indication_easy));
+        mTreeTextInfo.setVisibility(View.VISIBLE);
+        mColorInfoBackground.setVisibility(View.VISIBLE);
+    }
+
+    public void nextStep(View view) {
+        if (count == 0) {
+            mTreeInfo.setImageResource(R.drawable.treemedium);
+            mTreeTextInfo.setText(getString(R.string.track_indication_medium));
+            count++;
+        } else if (count == 1) {
+            mTreeInfo.setImageResource(R.drawable.treehard);
+            mTreeTextInfo.setText(getString(R.string.track_indication_hard));
+            count++;
+        } else {
+            mRecyclerView.setClickable(true);
+            mRecyclerView.setEnabled(true);
+            mInfoButton.setVisibility(View.VISIBLE);
+            mTreeInfo.setVisibility(View.INVISIBLE);
+            mTreeTextInfo.setVisibility(View.INVISIBLE);
+            mColorInfoBackground.setVisibility(View.INVISIBLE);
+            count = 0;
+        }
+    }
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
