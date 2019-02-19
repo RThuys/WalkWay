@@ -40,11 +40,12 @@
         </activity>
         <activity
             android:name=".ProfileActivity"
-            android:label="@string/title_activity_profile"></activity>
+            android:label="@string/title_activity_profile" />
         <activity
             android:name=".MapActivity"
             android:label="@string/title_map"
-            android:theme="@style/FullScreen"></activity>
+            android:theme="@style/FullScreen" />
+        <activity android:name=".PreferenceActivity"/>
     </application>
 
 </manifest>

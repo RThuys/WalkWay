@@ -6,35 +6,42 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.rt.walkway.dataBase.UserDBAdapter;
 
 //TODO implement pop-up on success
 public class RegisterActivity extends AppCompatActivity {
+    SharedPreferences sharedpreferences;
+    public static final String mypreference = "mypref";
+    public static final String IMAGE_ID = "id";
+
     EditText mFirstName, mLastName, mEmail, mUsername, mPassword, mConfirmPassword;
     TextInputLayout mFirstNameView, mLastNameView, mEmailView, mUsernameView, mPasswordView, mConfirmPasswordView;
     Button mRegister;
     UserDBAdapter dbAdapter;
 
+    private ScrollView mLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
+        mLayout = findViewById(R.id.register_scroll);
+
+        setBackground();
         mFirstName = findViewById(R.id.register_first_name_edit_text);
         mFirstNameView = findViewById(R.id.register_first_name_text_input_layout);
         mLastName = findViewById(R.id.register_last_name_edit_text);
@@ -180,5 +187,30 @@ public class RegisterActivity extends AppCompatActivity {
         String data = dbAdapter.getUserName(userName);
         Log.i("Email", "email: " + data);
         return data.toUpperCase();
+    }
+
+    private void setBackground() {
+        sharedpreferences = getSharedPreferences(mypreference,
+                Context.MODE_PRIVATE);
+        if (sharedpreferences.contains(IMAGE_ID)) {
+            Log.i("print", sharedpreferences.getString(IMAGE_ID, ""));
+            switch (sharedpreferences.getString(IMAGE_ID, "")) {
+                case "1":
+                    mLayout.setBackgroundResource(R.drawable.image);
+                    break;
+                case "2":
+                    mLayout.setBackgroundResource(R.drawable.image2);
+                    break;
+                case "3":
+                    mLayout.setBackgroundResource(R.drawable.image3);
+                    break;
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setBackground();
     }
 }

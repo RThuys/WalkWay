@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/preference_activity_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PreferenceActivity"
+    android:background="@drawable/image2">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#8F111111"/>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal">
+                    <ImageView
+                        android:layout_width="150dp"
+                        android:layout_height="200dp"
+                        android:src="@drawable/background" />
+
+                    <CheckBox
+                        android:id="@+id/checkbox_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+
+                        android:onClick="setBackground1"
+                        android:buttonTint="#FFFF"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal">
+                    <ImageView
+                        android:layout_width="150dp"
+                        android:layout_height="200dp"
+                        android:src="@drawable/background2" />
+
+                    <CheckBox
+                        android:id="@+id/checkbox_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+
+                        android:onClick="setBackground2"
+                        android:buttonTint="#FFFF"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal">
+                    <ImageView
+                        android:layout_width="150dp"
+                        android:layout_height="200dp"
+                        android:src="@drawable/background3" />
+
+                    <CheckBox
+                        android:id="@+id/checkbox_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:onClick="setBackground3"
+                        android:buttonTint="#FFFF"/>
+
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="SAVE"
+                    android:onClick="save"/>
+
+            </LinearLayout>
+
+
+
+        </ScrollView>
+
+
+    </RelativeLayout>
+</LinearLayout>

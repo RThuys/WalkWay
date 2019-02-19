@@ -2,24 +2,27 @@ package com.rt.walkway;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Activity;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rt.walkway.dataBase.UserDBAdapter;
 
 public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+    SharedPreferences sharedpreferences;
+    public static final String mypreference = "mypref";
+    public static final String IMAGE_ID = "id";
+
     public static String USER;
     private TextView mUsernameTextField;
+
+    private ConstraintLayout mLayout;
 
     UserDBAdapter dbAdapter;
 
@@ -27,6 +30,8 @@ public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        mLayout = findViewById(R.id.profile_layout);
+        setBackground();
 
         dbAdapter = new UserDBAdapter(this);
 
@@ -48,7 +53,7 @@ public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMe
 
         switch (item.getItemId()) {
             case R.id.change_image_item:
-                // do your code
+                setContext(PreferenceActivity.class);
                 return true;
             case R.id.logout_item:
 
@@ -75,5 +80,35 @@ public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMe
 
     public void goToPaths(View view) {
         setContext(ItemListActivity.class);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setBackground();
+        boolean loggedIn = MainActivity.loggedIn;
+        if (loggedIn == false) {
+            setContext(MainActivity.class);
+
+        }
+    }
+
+    private void setBackground() {
+        sharedpreferences = getSharedPreferences(mypreference,
+                Context.MODE_PRIVATE);
+        if (sharedpreferences.contains(IMAGE_ID)) {
+            Log.i("print", sharedpreferences.getString(IMAGE_ID, ""));
+            switch (sharedpreferences.getString(IMAGE_ID, "")) {
+                case "1":
+                    mLayout.setBackgroundResource(R.drawable.image);
+                    break;
+                case "2":
+                    mLayout.setBackgroundResource(R.drawable.image2);
+                    break;
+                case "3":
+                    mLayout.setBackgroundResource(R.drawable.image3);
+                    break;
+            }
+        }
     }
 }

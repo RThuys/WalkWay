@@ -3,6 +3,7 @@ package com.rt.walkway;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -35,10 +37,15 @@ import java.util.List;
 import java.util.Locale;
 
 public class ItemListActivity extends AppCompatActivity implements LocationListener, PrintListner {
+    SharedPreferences sharedpreferences;
+    public static final String mypreference = "mypref";
+    public static final String IMAGE_ID = "id";
+
     private boolean mTwoPane;
     private EditText mLocationText;
     private ImageView mTreeInfo, mInfoButton;
     private TextView mColorInfoBackground, mTreeTextInfo;
+    private LinearLayout mLayout;
 
     private LocationManager locationManager;
 
@@ -79,7 +86,9 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
+        mLayout = findViewById(R.id.land_layout);
         swipeContainer = findViewById(R.id.refresh_list);
+        setBackground();
         mLocationText = findViewById((R.id.location_input_field));
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
         mRecyclerView = findViewById(R.id.item_list);
@@ -310,4 +319,42 @@ public class ItemListActivity extends AppCompatActivity implements LocationListe
         context.startActivity(intent);
     }
 
+    private void setBackground() {
+        sharedpreferences = getSharedPreferences(mypreference,
+                Context.MODE_PRIVATE);
+        if (sharedpreferences.contains(IMAGE_ID)) {
+            Log.i("print", sharedpreferences.getString(IMAGE_ID, ""));
+            if (mLayout == null) {
+                switch (sharedpreferences.getString(IMAGE_ID, "")) {
+                    case "1":
+                        swipeContainer.setBackgroundResource(R.drawable.image);
+                        break;
+                    case "2":
+                        swipeContainer.setBackgroundResource(R.drawable.image2);
+                        break;
+                    case "3":
+                        swipeContainer.setBackgroundResource(R.drawable.image3);
+                        break;
+                }
+            } else {
+                switch (sharedpreferences.getString(IMAGE_ID, "")) {
+                    case "1":
+                        mLayout.setBackgroundResource(R.drawable.image);
+                        break;
+                    case "2":
+                        mLayout.setBackgroundResource(R.drawable.image2);
+                        break;
+                    case "3":
+                        mLayout.setBackgroundResource(R.drawable.image3);
+                        break;
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setBackground();
+    }
 }

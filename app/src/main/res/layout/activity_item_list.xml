@@ -83,7 +83,8 @@
                     android:layout_height="wrap_content"
                     android:visibility="invisible"
                     android:textSize="20sp"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="#FFFFFF"
+                    android:gravity="center_horizontal"/>
             </LinearLayout>
 
             <ImageView
